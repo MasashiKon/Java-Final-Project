@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/monsterpage.css}">
+    <script type="text/javascript" th:src="@{/js/battleLogic.js}" defer></script>
+    <title>testApi</title>
+</head>
+<body>
+    <div id="messageWindow"></div>
+    <div class="monster">
+        <div id="speechBubble" class="sb9" th:text="${quote}"></div>
+        <div id="monster" th:utext="${monster}"></div>
+        <table>
+            <div id="total" th:text="${userSession.getTotal()}" hidden></div>
+            <td>Win<div id="wins" th:text="${userSession.getWins()}" ></div></td>
+            <td>Lose<div id="loses" th:text="${userSession.getLoses()}" ></div></td>
+            <td>Streak<div id="streak" th:text="${userSession.getStreak()}" ></div></td>
+        </table>
+        <table class="monsterTable">
+            <tbody>
+                <tr>
+                    <td colspan="6">Monster's Stats</td>
+                </tr>
+                <tr>
+                    <th>HP</th>
+                    <th>Attack</th>
+                    <th>Defense</th>
+                    <th>Magic Attack</th>
+                    <th>Magic Defense</th>
+                    <th>Speed</th>
+                </tr>
+                <tr>
+                    <td id="monsHp" th:text="${hp}"></td>
+                    <td id="monsAttack" th:text="${attack}"></td>
+                    <td id="monsDefense" th:text="${defense}"></td>
+                    <td id="monsMagicAttack" th:text="${magicAttack}"></td>
+                    <td id="monsMagicDefense" th:text="${magicDefense}"></td>
+                    <td id="monsSpeed" th:text="${speed}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <div class="player">
+        <table class="playerTable">
+            <tbody>
+                <tr>
+                    <td th:content="|${userSession.getUsename()}'s Stats|" colspan="6">Player's Stats</td>
+                </tr>
+                <tr>
+                    <th>HP</th>
+                    <th>Attack</th>
+                    <th>Defense</th>
+                    <th>Magic Attack</th>
+                    <th>Magic Defense</th>
+                    <th>Speed</th>
+                </tr>
+                <tr>
+                    <td id="playerHp">0</td>
+                    <td id="playerAttack">0</td>
+                    <td id="playerDefense">0</td>
+                    <td id="playerMagicAttack">0</td>
+                    <td id="playerMagicDefense">0</td>
+                    <td id="playerSpeed">0</td>
+                </tr>
+                <tr id="buttonsRow" class="stopButton">
+                    <td><button id="stopHpBtn" class="stopButton">STOP</button></td>
+                    <td><button id="stopAttackBtn" class="stopButton">STOP</button></td>
+                    <td><button id="stopDefenseBtn" class="stopButton">STOP</button></td>
+                    <td><button id="stopMagicAttackBtn" class="stopButton">STOP</button></td>
+                    <td><button id="stopMagicDefenseBtn" class="stopButton">STOP</button></td>
+                    <td><button id="stopSpeedBtn" class="stopButton">STOP</button></td>
+                </tr>
+                <tr id="allButtonRow">
+                    <td colspan="6"><button id="stopAllBtn" class="stopButton">Stop All</button> </td>
+                </tr>
+            </tbody>
+        </table>
+             
+    </div>
+    <br>
+    <div class="buttonContainer">
+        <button id="attackBtn" class="battleButton" hidden="hidden">Attack</button>
+        <button id="magicAttackBtn" class="battleButton" hidden="hidden">Magic Attack</button>
+        <button id="defenseBtn" class="battleButton" hidden="hidden">Defense</button>
+    </div>
+    <div id="nextBtnContainer">
+        <button id="nextBattleBtn" hidden="hidden">Next Battle</button>
+    </div>
+    <form action="http://localhost:8080/logout">
+        <button id="logoutBtn">Log Out</button>
+    </form>
+    <div id="total" th:text="${userSession.getTotal()}" hidden></div>
+    <div id="wins" th:text="${userSession.getWins()}" hidden></div>
+    <div id="loses" th:text="${userSession.getLoses()}" hidden></div>
+    <div id="streak" th:text="${userSession.getStreak()}" hidden></div>
+</body>
+</html>

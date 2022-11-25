@@ -1,0 +1,133 @@
+* {
+    font-family: arial;
+}
+
+#messageWindow {
+    width: 500px;
+    height: 50px;
+    line-height: 50px;
+    margin: auto;
+    border: 4px solid #00bfb6;
+    text-align: center;
+    position: relative;
+    padding: 20px;
+    font-weight: bold;
+    color: #00bfb6;
+    font-family: arial;
+    font-size: 30px;
+}
+
+#speechBubble {
+    width: 300px;
+    margin: 20px auto;
+    border: 4px solid #00bfb6;
+    padding: 20px;
+    text-align: center;
+    font-weight: 900;
+    color: #00bfb6;
+    font-family: arial;
+    position: relative;
+}
+
+.sb9:before {
+    content: "";
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #00bfb6;
+    border-bottom: 10px solid transparent;
+    right: 50%;
+    bottom: -23px;
+}
+  
+.sb9:after {
+    content: "";
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #fff;
+    border-bottom: 10px solid transparent;
+    right: 50%;
+    bottom: -18px;
+}
+
+#monster{
+    height: 10%;
+    width: 10%;
+    margin: auto;
+}
+
+.monster {
+    margin: auto;
+}
+
+.monsterTable {
+    margin: auto;
+}
+
+table, th{
+    border: 2px solid #00bfb6;
+    border-collapse: collapse;
+    margin: auto;
+    text-align: center;
+    color: #01736e;
+}
+
+th {
+    table-layout:fixed;
+    width: 10%;
+}
+
+td {
+    font: large;
+    border: 2px solid #00bfb6;
+    border-collapse: collapse;
+    padding: 5px 20px;
+    text-align: center;
+    color: #01736e;
+}
+
+.stopButton{
+    color: #01736e;
+    border: 2px solid #00bfb6;
+    background-color: white;
+}
+
+.buttonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.battleButton {
+    font-size: 20px;
+    float: left;
+    border: 2px solid #00bfb6;
+    color: #01736e;
+    background-color: white;
+}
+
+#nextBattleBtn {
+    margin: auto;
+    color: #01736e;
+    background-color: white;
+    border: 2px solid #00bfb6;
+    font-size: 20px;
+}
+
+#nextBtnContainer {
+    display: flex;
+}
+
+#logoutBtn {
+    display: flex;
+    margin: auto;
+    color: #01736e;
+    background-color: white;
+    border: 2px solid #00bfb6;
+    font-size: 10px;
+}

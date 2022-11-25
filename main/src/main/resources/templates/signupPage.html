@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th = "http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" th:src="@{/js/signupSubmit.js}" defer></script>
+    <title>Create an Account</title>
+</head>
+<body>
+    <H1>Sign Up</H1>
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" required>
+        <div th:if="${isSameName}" style="color:red">
+            Sorry, this user name is already exist.
+        </div>
+        <br>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required>
+        <br>
+        <button type="submit" id="submit">Signup</button>
+</body>
+</html>

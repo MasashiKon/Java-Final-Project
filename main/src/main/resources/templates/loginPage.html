@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th = "http://www.thymeleaf.org">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" th:src="@{/js/loginSubmit.js}" defer></script>
+    <title>Log In</title>
+</head>
+<body>
+    <H1>Log In</H1>
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username" required>
+    <br>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+    <br>
+    <button type="submit" id="submit">Login</button>
+    <br>
+    <h2>Don't Have an Account?</h2>
+    <h2>Create your account <a href="http://localhost:8080/signup">here</a></h2>
+    <form action="http://localhost:8080/logout">
+        <button th:if="${session.userSession != null}" id="logoutBtn">Log Out</button>
+    </form>
+</body>
+</html>
