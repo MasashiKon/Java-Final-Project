@@ -11,7 +11,9 @@ function handleSubmit() {
         redirect: 'follow',
         body: JSON.stringify(body)
     }).then((response) => {
-        response.text().then(html => document.write(html));
+        if (response.redirected) {
+            window.location.href = response.url;
+        }
     });
 }
 

@@ -15,11 +15,6 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-
 import org.bouncycastle.util.encoders.Hex;
 
 import org.springframework.stereotype.Controller;
@@ -27,10 +22,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
@@ -43,7 +38,7 @@ import com.randombattlegenerator.main.entities.User;
 import com.randombattlegenerator.main.repositories.UserRepository;
 
 @Controller
-@SessionAttributes("userSession") 
+@SessionAttributes({"userSession", "isSameName", "userNameExist", "passwordFail"}) 
 public class MainApplicationController {
     
     private final UserRepository userRepository;
@@ -59,17 +54,20 @@ public class MainApplicationController {
         // newUser.setUsename("testuser");
         // newUser.setAuthenticated(false);
         // model.addAttribute("userSession", newUser);
+        UserSession userSession = (UserSession) model.getAttribute("userSession");
+        if(userSession != null && userSession.isAuthenticated()) {
+            return "redirect:/randombattle";
+        }
     
-        return "index";
-    }
-
-    @GetMapping("/second")
-    public String getTest() {
-        return "jscssDemo";
+        return "redirect:/login";
     }
 
     @GetMapping("/randombattle")
     public String getApi(Model model) throws URISyntaxException, IOException, InterruptedException {
+
+        model.addAttribute("userNameExist", false);
+        model.addAttribute("passwordFail", false);
+        model.addAttribute("isSameName", false);
 
         UserSession userSession = (UserSession) model.getAttribute("userSession");
 
@@ -168,82 +166,82 @@ public class MainApplicationController {
     }
 
 
-    @GetMapping("/test")
-    public String testGet(@ModelAttribute UserSession session, HttpSession httpSession, @CookieValue(value = "session_id", required=false) String cookieSession, HttpServletResponse response) {
-        System.out.println(session);
-        System.out.println(httpSession.getId());
-        //session.setSession_id(httpSession.getId());
-        session.setUsename("testuser");
-        session.setAuthenticated(true);
-        System.out.println(session);
-        System.out.println(httpSession.getId());
-        System.out.println(cookieSession);
-        Cookie cookie = new Cookie("session_id", httpSession.getId());
-        cookie.setMaxAge(1);
-        response.addCookie(cookie);
-        return "test";
-    }
+    // @GetMapping("/test")
+    // public String testGet(@ModelAttribute UserSession session, HttpSession httpSession, @CookieValue(value = "session_id", required=false) String cookieSession, HttpServletResponse response) {
+    //     System.out.println(session);
+    //     System.out.println(httpSession.getId());
+    //     //session.setSession_id(httpSession.getId());
+    //     session.setUsename("testuser");
+    //     session.setAuthenticated(true);
+    //     System.out.println(session);
+    //     System.out.println(httpSession.getId());
+    //     System.out.println(cookieSession);
+    //     Cookie cookie = new Cookie("session_id", httpSession.getId());
+    //     cookie.setMaxAge(1);
+    //     response.addCookie(cookie);
+    //     return "test";
+    // }
 
     // -H "Content-Type: application/json;charset=UTF-8"
-    @PostMapping("/test")
-    public String testPost(@RequestBody User user, HttpSession httpSession) {
-        System.out.println(httpSession);
+    // @PostMapping("/test")
+    // public String testPost(@RequestBody User user, HttpSession httpSession) {
+    //     System.out.println(httpSession);
 
-        MessageDigest digest;
-        try {
-            String password = user.getPassword();
-            SecureRandom random = new SecureRandom();
-            byte[] bytes = new byte[20];
-            random.nextBytes(bytes);
-            String salt = Base64.getEncoder().encodeToString(bytes);
+    //     MessageDigest digest;
+    //     try {
+    //         String password = user.getPassword();
+    //         SecureRandom random = new SecureRandom();
+    //         byte[] bytes = new byte[20];
+    //         random.nextBytes(bytes);
+    //         String salt = Base64.getEncoder().encodeToString(bytes);
 
-            String saltPassword = salt + password;
+    //         String saltPassword = salt + password;
 
-            digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(saltPassword.getBytes(StandardCharsets.UTF_8));
-            String hashedPassword = new String(Hex.encode(hash));
-            user.setPassword(hashedPassword);
-            user.setSalt(salt);
-            this.userRepository.save(user);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+    //         digest = MessageDigest.getInstance("SHA-256");
+    //         byte[] hash = digest.digest(saltPassword.getBytes(StandardCharsets.UTF_8));
+    //         String hashedPassword = new String(Hex.encode(hash));
+    //         user.setPassword(hashedPassword);
+    //         user.setSalt(salt);
+    //         this.userRepository.save(user);
+    //     } catch (NoSuchAlgorithmException e) {
+    //         e.printStackTrace();
+    //     }
 
 
-        return "test";
-    }
+    //     return "test";
+    // }
 
-    @PutMapping("/test/{id}")
-    public String testPut(@PathVariable("id") Integer id, @RequestBody User user) {
-        Optional<User> updateUserOptional = this.userRepository.findById(id);
+    // @PutMapping("/test/{id}")
+    // public String testPut(@PathVariable("id") Integer id, @RequestBody User user) {
+    //     Optional<User> updateUserOptional = this.userRepository.findById(id);
 
-        if(updateUserOptional.isPresent()) {
-           User userToUpdate = updateUserOptional.get(); 
-           if(user.getUsername() != null) {
-            userToUpdate.setUsername(user.getUsername());
-           }
-           if(user.getPassword() != null) {
-            userToUpdate.setPassword(user.getPassword());
-           }
-           if(user.getSalt() != null) {
-            userToUpdate.setSalt(user.getSalt());
-           }
-           if(user.getTotal() != null) {
-            userToUpdate.setTotal(user.getTotal());
-           }
-           if(user.getWins() != null) {
-            userToUpdate.setWins(user.getWins());
-           }
-           if(user.getLoses() != null) {
-            userToUpdate.setLoses(user.getLoses());
-           }
-           if(user.getStreak() != null) {
-            userToUpdate.setStreak(user.getStreak());
-           }
-           this.userRepository.save(userToUpdate); 
-        }
-        return "test";
-    }
+    //     if(updateUserOptional.isPresent()) {
+    //        User userToUpdate = updateUserOptional.get(); 
+    //        if(user.getUsername() != null) {
+    //         userToUpdate.setUsername(user.getUsername());
+    //        }
+    //        if(user.getPassword() != null) {
+    //         userToUpdate.setPassword(user.getPassword());
+    //        }
+    //        if(user.getSalt() != null) {
+    //         userToUpdate.setSalt(user.getSalt());
+    //        }
+    //        if(user.getTotal() != null) {
+    //         userToUpdate.setTotal(user.getTotal());
+    //        }
+    //        if(user.getWins() != null) {
+    //         userToUpdate.setWins(user.getWins());
+    //        }
+    //        if(user.getLoses() != null) {
+    //         userToUpdate.setLoses(user.getLoses());
+    //        }
+    //        if(user.getStreak() != null) {
+    //         userToUpdate.setStreak(user.getStreak());
+    //        }
+    //        this.userRepository.save(userToUpdate); 
+    //     }
+    //     return "test";
+    // }
 
     @DeleteMapping("/test/{id}")
     public String testDelete(@PathVariable("id") Integer id) {
@@ -264,6 +262,9 @@ public class MainApplicationController {
 
     @PostMapping("/signup")
     public String postSignupPage(Model model, @RequestBody User user) {
+        model.addAttribute("userNameExist", false);
+        model.addAttribute("passwordFail", false);
+        model.addAttribute("isSameName", false);
 
         MessageDigest digest;
         UserSession userSession = new UserSession();
@@ -272,7 +273,7 @@ public class MainApplicationController {
 
         if(!sameUsername.isEmpty()) {
             model.addAttribute("isSameName", true);
-            return "signupPage";
+            return "redirect:/signup";
         }
 
         try {
@@ -296,7 +297,7 @@ public class MainApplicationController {
             newUser = this.userRepository.save(user);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            return "redirect:/sighup";
+            return "redirect:/signup";
         }
 
         userSession.setUserId(newUser.getId());
@@ -319,12 +320,16 @@ public class MainApplicationController {
 
     @PostMapping("/login")
     public String postLoginPage(Model model, @RequestBody User user) {
+        model.addAttribute("userNameExist", false);
+        model.addAttribute("passwordFail", false);
+        model.addAttribute("isSameName", false);
 
         MessageDigest digest;
         try {
             List<User> userList = this.userRepository.findByUsername(user.getUsername());
 
-            if(userList == null) {
+            if(userList.isEmpty()) {
+                model.addAttribute("userNameExist", true);
                 return "redirect:/login";
             }
 
@@ -362,7 +367,8 @@ public class MainApplicationController {
             e.printStackTrace();
             return "redirect:/login";
         }
-        
+
+        model.addAttribute("passwordFail", true);     
         return "redirect:/login";
     }
 

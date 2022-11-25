@@ -43,7 +43,7 @@ public class AsyncMethods {
     public static HttpResponse<String> quoteApi() throws IOException, InterruptedException, URISyntaxException {
         HttpRequest request = HttpRequest.newBuilder()
         .uri(new URI("https://quotes15.p.rapidapi.com/quotes/random/"))
-        .header("X-RapidAPI-Key", "")
+        .header("X-RapidAPI-Key", "53f824b276msh3e8777eee74b7b0p1a7ee5jsnd26c266ef326")
         .header("X-RapidAPI-Host", "quotes15.p.rapidapi.com")
         .method("GET", HttpRequest.BodyPublishers.noBody())
         .build();

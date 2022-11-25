@@ -4,6 +4,7 @@
     <meta charset="UTF-8" xmlns:th = "http://www.thymeleaf.org">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
     <script type="text/javascript" th:src="@{/js/loginSubmit.js}" defer></script>
     <title>Log In</title>
 </head>
@@ -11,16 +12,18 @@
     <H1>Log In</H1>
     <label for="username">Username</label>
     <input type="text" name="username" id="username" required>
+    <div th:if="${userNameExist}" style="color: red">This username doesn't exist.</div>
     <br>
     <label for="password">Password</label>
     <input type="password" name="password" id="password" required>
+    <div th:if="${passwordFail}" style="color: red">Password is wrong.</div>
     <br>
     <button type="submit" id="submit">Login</button>
     <br>
-    <h2>Don't Have an Account?</h2>
-    <h2>Create your account <a href="http://localhost:8080/signup">here</a></h2>
+    <h4>Don't Have an Account?</h2>
+    <h4>Create your account <a href="http://localhost:8080/signup">here</a></h2>
     <form action="http://localhost:8080/logout">
-        <button th:if="${session.userSession != null}" id="logoutBtn">Log Out</button>
+        <button th:if="${userSession != null}" id="logoutBtn">Log Out</button>
     </form>
 </body>
 </html>
